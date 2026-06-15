@@ -55,9 +55,9 @@ class AnalysisService:
                 self.analyzer.furnishing_price_impact(df)
             ),
 
-            "sector_map": (
-                self.analyzer.sector_map(df, latlong)
-            )
+            # "sector_map": (
+            #     self.analyzer.sector_map(df, latlong)
+            # )
         }
 
         return charts
