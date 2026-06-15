@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>EstateAI | Real Estate Intelligence</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <link rel="stylesheet" href="/static/css/style.css">
+
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+</head>
+
+<body>
+
+<div class="app-shell">
+
+    <aside class="sidebar">
+
+        <div class="brand">
+            <div class="brand-icon">E</div>
+
+            <div>
+                <h2>EstateAI</h2>
+                <p>Real Estate Intelligence</p>
+            </div>
+        </div>
+
+        <nav class="nav-menu">
+
+            <a href="/" class="nav-item">
+                🏠 Price Prediction
+            </a>
+
+            <a href="/recommendation" class="nav-item">
+                ✨ Recommendation
+            </a>
+
+            <a href="/analysis" class="nav-item">
+                📊 Market Analysis
+            </a>
+
+            <a href="/deep-vision" class="nav-item">
+                🖼️ Deep Image AI
+            </a>
+
+            <a href="/ai-assistant" class="nav-item">
+                🤖 Agentic AI
+            </a>
+
+        </nav>
+
+        <div class="sidebar-card">
+            <p>Platform Status</p>
+            <h3>ML Engine Active</h3>
+            <span>Prediction + Recommendation</span>
+        </div>
+
+    </aside>
+
+    <main class="main">
+
+        {% block content %}
+        {% endblock %}
+
+    </main>
+
+</div>
+
+</body>
+</html>

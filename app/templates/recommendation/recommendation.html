@@ -1,0 +1,104 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<section class="hero">
+    <div class="hero-left">
+        <div class="badge">Hybrid Recommendation Engine</div>
+        <h1>Discover Similar Premium Properties</h1>
+        <p>
+            Get property recommendations using facilities similarity, price configuration similarity
+            and location advantage similarity.
+        </p>
+    </div>
+
+    <div class="hero-panel">
+        <div class="metric">
+            <p>Engine</p>
+            <h2>Hybrid</h2>
+            <span>3 Similarity Models</span>
+        </div>
+
+        <div class="metric">
+            <p>Data</p>
+            <h2>246+</h2>
+            <span>Apartment Projects</span>
+        </div>
+
+        <div class="metric">
+            <p>Status</p>
+            <h2>Active</h2>
+            <span>Recommendation Ready</span>
+        </div>
+    </div>
+</section>
+
+<section class="predict-card">
+
+    <div class="section-title">
+        <div>
+            <span>Recommendation Engine</span>
+            <h2>Select a Property</h2>
+        </div>
+        <p>Choose a property and find the most similar projects.</p>
+    </div>
+
+    <form method="post" action="/recommendation">
+
+        <div class="form-grid">
+
+            <div class="input-box">
+                <label>Property Name</label>
+                <select name="property_name" required>
+                    {% for property in property_names %}
+                        <option value="{{ property }}"
+                            {% if selected_property == property %}selected{% endif %}>
+                            {{ property }}
+                        </option>
+                    {% endfor %}
+                </select>
+            </div>
+
+            <div class="input-box">
+                <label>Number of Recommendations</label>
+                <input type="number" name="top_n" value="5" min="1" max="20">
+            </div>
+
+        </div>
+
+        <button class="predict-btn" type="submit">
+            Get Recommendations →
+        </button>
+
+    </form>
+
+    {% if recommendations %}
+    <div class="recommendation-results">
+
+        <div class="section-title small-title">
+            <div>
+                <span>Results</span>
+                <h2>Recommended Properties</h2>
+            </div>
+            <p>Based on {{ selected_property }}</p>
+        </div>
+
+        <div class="recommendation-grid">
+
+            {% for item in recommendations %}
+            <div class="recommendation-card">
+                <div class="rec-rank">#{{ loop.index }}</div>
+                <h3>{{ item.PropertyName }}</h3>
+                <p>Hybrid similarity score</p>
+                <span>{{ "%.2f"|format(item.SimilarityScore) }}</span>
+            </div>
+            {% endfor %}
+
+        </div>
+
+    </div>
+    {% endif %}
+
+</section>
+
+{% endblock %}

@@ -1,10 +1,10 @@
 from src.utils.data_loader import DataLoader
-from src.utils.model_selection import SanityCheckTrainer
+from src.utils.sanity_check_training import SanityCheckTrainer
 
 
 def test_model_trainer():
     loader = DataLoader()
-    
+
     df = loader.load_feature_selection_data()
 
     trainer = SanityCheckTrainer()

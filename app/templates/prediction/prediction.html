@@ -1,0 +1,214 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<section class="hero">
+    <div class="hero-left">
+        <div class="badge">AI Powered Property Valuation</div>
+        <h1>Find the True Market Value of Your Property</h1>
+        <p>
+            Estimate Gurgaon property prices using a complete machine learning pipeline
+            built with preprocessing, feature engineering, outlier treatment, feature selection and tuned XGBoost.
+        </p>
+
+        <div class="hero-actions">
+            <a href="#predict" class="primary-btn">Start Prediction</a>
+            <span>Future-ready platform for AI, recommendation and analytics.</span>
+        </div>
+    </div>
+
+    <div class="hero-panel">
+        <div class="metric">
+            <p>Dataset</p>
+            <h2>3,684+</h2>
+            <span>Cleaned Records</span>
+        </div>
+
+        <div class="metric">
+            <p>Model</p>
+            <h2>XGBoost</h2>
+            <span>Tuned Regressor</span>
+        </div>
+
+        <div class="metric">
+            <p>Pipeline</p>
+            <h2>End-to-End</h2>
+            <span>ML Ready</span>
+        </div>
+    </div>
+</section>
+
+<section class="modules">
+    <div class="module active-module">
+        <span>01</span>
+        <h3>Price Prediction</h3>
+        <p>Predict property price using trained ML model.</p>
+        <b>Active</b>
+    </div>
+
+    <div class="module">
+        <span>02</span>
+        <h3>Recommendation</h3>
+        <p>Personalized property suggestions.</p>
+        <b>Available</b>
+    </div>
+
+    <div class="module">
+        <span>03</span>
+        <h3>Market Analysis</h3>
+        <p>Sector-wise insights and trends.</p>
+        <b>Coming Soon</b>
+    </div>
+
+    <div class="module">
+        <span>04</span>
+        <h3>Deep Image AI</h3>
+        <p>Analyze property images using deep learning.</p>
+        <b>Coming Soon</b>
+    </div>
+
+    <div class="module">
+        <span>05</span>
+        <h3>Agentic AI</h3>
+        <p>Ask an AI agent about real estate decisions.</p>
+        <b>Coming Soon</b>
+    </div>
+</section>
+
+<section class="predict-card" id="predict">
+
+    <div class="section-title">
+        <div>
+            <span>Prediction Engine</span>
+            <h2>Enter Property Details</h2>
+        </div>
+        <p>Fill the details below and get an estimated market price.</p>
+    </div>
+
+    <form method="post" action="/predict">
+
+        <div class="form-grid">
+
+            <div class="input-box">
+                <label>Property Type</label>
+                <select name="property_type" required>
+                    {% for item in options.property_types %}
+                    <option value="{{ item }}">{{ item }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+
+            <div class="input-box">
+                <label>Sector</label>
+                <select name="sector" required>
+                    {% for item in options.sectors %}
+                    <option value="{{ item }}">{{ item }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+
+            <div class="input-box">
+                <label>Bedrooms</label>
+                <input type="number" name="bedRoom" step="1" placeholder="e.g. 3" required>
+            </div>
+
+            <div class="input-box">
+                <label>Bathrooms</label>
+                <input type="number" name="bathroom" step="1" placeholder="e.g. 2" required>
+            </div>
+
+            <div class="input-box">
+                <label>Balcony</label>
+                <select name="balcony" required>
+                    {% for item in options.balconies %}
+                    <option value="{{ item }}">{{ item }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+
+            <div class="input-box">
+                <label>Age Possession</label>
+                <select name="agePossession" required>
+                    {% for item in options.age_possession %}
+                    <option value="{{ item }}">{{ item }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+
+            <div class="input-box">
+                <label>Floor Number</label>
+                <input type="number" name="floor_num" step="1" placeholder="e.g. 5" required>
+            </div>
+
+            <div class="input-box">
+                <label>Total Floors</label>
+                <input type="number" name="total_floors" step="1" placeholder="e.g. 18" required>
+            </div>
+
+            <div class="input-box">
+                <label>Built Up Area</label>
+                <input type="number" name="built_up_area" step="1" placeholder="e.g. 1450" required>
+            </div>
+
+            <div class="input-box">
+                <label>Servant Room</label>
+                <select name="servant_room" required>
+                    <option value="0">No</option>
+                    <option value="1">Yes</option>
+                </select>
+            </div>
+
+            <div class="input-box">
+                <label>Store Room</label>
+                <select name="store_room" required>
+                    <option value="0">No</option>
+                    <option value="1">Yes</option>
+                </select>
+            </div>
+
+            <div class="input-box">
+                <label>Furnishing Type</label>
+                <select name="furnishing_type" required>
+                    {% for item in options.furnishing_types %}
+                    <option value="{{ item }}">{{ item }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+
+            <div class="input-box">
+                <label>Luxury Category</label>
+                <select name="luxury_category" required>
+                    {% for item in options.luxury_categories %}
+                    <option value="{{ item }}">{{ item }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+
+            <div class="input-box">
+                <label>Floor Category</label>
+                <select name="floor_category" required>
+                    {% for item in options.floor_categories %}
+                    <option value="{{ item }}">{{ item }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+
+        </div>
+
+        <button class="predict-btn" type="submit">
+            Predict Price →
+        </button>
+
+    </form>
+
+    {% if prediction %}
+    <div class="result-box">
+        <p>Estimated Market Price</p>
+        <h2>₹ {{ prediction }} Cr</h2>
+        <span>This is an ML-based estimate and may vary with real market conditions.</span>
+    </div>
+    {% endif %}
+
+</section>
+
+{% endblock %}

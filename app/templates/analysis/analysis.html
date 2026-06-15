@@ -1,0 +1,83 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<section class="hero">
+    <div class="hero-left">
+
+        <div class="badge">
+            Real Estate Intelligence Dashboard
+        </div>
+
+        <h1>
+            Gurgaon Property Market Analysis
+        </h1>
+
+        <p>
+            Explore sector trends, pricing patterns, luxury impact,
+            furnishing insights and location intelligence using
+            interactive visual analytics.
+        </p>
+
+    </div>
+
+    <div class="hero-panel">
+
+        <div class="metric">
+            <p>Analytics</p>
+            <h2>8+</h2>
+            <span>Interactive Charts</span>
+        </div>
+
+        <div class="metric">
+            <p>Coverage</p>
+            <h2>3600+</h2>
+            <span>Properties</span>
+        </div>
+
+        <div class="metric">
+            <p>Insights</p>
+            <h2>Live</h2>
+            <span>Market Intelligence</span>
+        </div>
+
+    </div>
+</section>
+
+<div class="analysis-grid">
+
+    <div class="chart-card">
+        {{ charts.property_type_distribution | safe }}
+    </div>
+
+    <div class="chart-card">
+        {{ charts.luxury_price_impact | safe }}
+    </div>
+
+    <div class="chart-card full-width">
+        {{ charts.sector_map | safe }}
+    </div>
+
+    <div class="chart-card">
+        {{ charts.top_expensive_sectors | safe }}
+    </div>
+
+    <div class="chart-card">
+        {{ charts.top_affordable_sectors | safe }}
+    </div>
+
+    <div class="chart-card full-width">
+        {{ charts.area_vs_price | safe }}
+    </div>
+
+    <div class="chart-card">
+        {{ charts.bhk_price_analysis | safe }}
+    </div>
+
+    <div class="chart-card">
+        {{ charts.furnishing_price_impact | safe }}
+    </div>
+
+</div>
+
+{% endblock %}
