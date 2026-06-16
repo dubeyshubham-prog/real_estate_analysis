@@ -3,10 +3,19 @@ from fastapi.staticfiles import StaticFiles
 from app.routes.recommendation_routes import router as recommendation_router
 from app.routes.prediction_routes import router as prediction_router
 from app.routes.analysis_routes import router as analysis_router
+from app.routes.vision_routes import router as vision_router
+from fastapi.staticfiles import StaticFiles
 
 
 app = FastAPI(
     title="Real Estate Intelligence Platform"
+)
+app.mount(
+    "/property-images",
+    StaticFiles(
+        directory="data/property_images/raw/room-dataset"
+    ),
+    name="property-images"
 )
 
 # ==========================================================
@@ -31,4 +40,8 @@ app.include_router(
 
 app.include_router(
     analysis_router
+)
+
+app.include_router(
+    vision_router
 )

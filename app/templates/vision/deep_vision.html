@@ -1,0 +1,106 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<section class="hero">
+    <div class="hero-left">
+        <div class="badge">Deep Vision AI</div>
+        <h1>Find Visually Similar Property Images</h1>
+        <p>
+            Upload any room/property image and EstateAI will search across 12K+ visual embeddings
+            to find the most similar images using deep learning.
+        </p>
+    </div>
+
+    <div class="hero-panel">
+        <div class="metric">
+            <p>Model</p>
+            <h2>ResNet18</h2>
+            <span>Feature Extractor</span>
+        </div>
+
+        <div class="metric">
+            <p>Database</p>
+            <h2>12K+</h2>
+            <span>Visual Embeddings</span>
+        </div>
+
+        <div class="metric">
+            <p>Search</p>
+            <h2>Cosine</h2>
+            <span>Similarity Engine</span>
+        </div>
+    </div>
+</section>
+
+<section class="predict-card">
+
+    <div class="section-title">
+        <div>
+            <span>Visual Search Engine</span>
+            <h2>Upload Property Image</h2>
+        </div>
+        <p>Find visually similar rooms from the image database.</p>
+    </div>
+
+    <form method="post" action="/deep-vision" enctype="multipart/form-data">
+
+        <div class="vision-upload-box">
+            <div class="input-box">
+                <label>Select Room / Property Image</label>
+                <input type="file" name="image" accept="image/*" required>
+            </div>
+        </div>
+
+        <button class="predict-btn" type="submit">
+            Find Similar Images →
+        </button>
+
+    </form>
+
+    {% if result %}
+    <div class="deep-vision-results">
+
+        <div class="section-title small-title">
+            <div>
+                <span>AI Results</span>
+                <h2>Top Visual Matches</h2>
+            </div>
+            <p>Based on ResNet18 image embeddings.</p>
+        </div>
+
+        <div class="recommendation-grid">
+
+            {% for item in result.recommendations %}
+            <div class="recommendation-card">
+
+                <div class="rec-rank">#{{ loop.index }}</div>
+
+                <img
+                    src="{{ item.image_url }}"
+                    alt="{{ item.room_type }}"
+                >
+
+                <h3>{{ item.room_type | title }}</h3>
+
+                <span class="room-badge">
+                    {{ item.room_type }}
+                </span>
+
+                <p>Similarity Score</p>
+
+                <span class="similarity-score">
+                    {{ item.similarity_score }}
+                </span>
+
+            </div>
+            {% endfor %}
+
+        </div>
+
+    </div>
+    {% endif %}
+
+</section>
+
+{% endblock %}
