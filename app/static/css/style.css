@@ -626,3 +626,9 @@ body {
     border-radius: 16px;
     margin-bottom: 16px;
 }
+
+.agent-response-text{
+    white-space: pre-wrap;
+    overflow-wrap: anywhere;
+    word-break: break-word;
+}

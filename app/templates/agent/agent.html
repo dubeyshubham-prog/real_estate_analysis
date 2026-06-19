@@ -1,0 +1,69 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<section class="hero">
+    <div class="hero-left">
+        <div class="badge">Agentic AI</div>
+        <h1>Ask EstateAI Anything About Real Estate</h1>
+        <p>
+            Ask questions about market analysis, similar properties, price prediction,
+            and real estate decision-making.
+        </p>
+    </div>
+
+    <div class="hero-panel">
+        <div class="metric">
+            <p>Agent Type</p>
+            <h2>Tool AI</h2>
+            <span>Custom Router</span>
+        </div>
+
+        <div class="metric">
+            <p>Tools</p>
+            <h2>3+</h2>
+            <span>Prediction, Analysis, Recommendation</span>
+        </div>
+    </div>
+</section>
+
+<section class="predict-card">
+
+    <div class="section-title">
+        <div>
+            <span>EstateAI Agent</span>
+            <h2>Ask Your Query</h2>
+        </div>
+        <p>Example: Analyze Gurgaon real estate market</p>
+    </div>
+
+    <form method="post" action="/ai-assistant">
+        <div class="input-box">
+            <label>Your Question</label>
+            <input
+                type="text"
+                name="query"
+                placeholder="Recommend properties similar to DLF The Arbour"
+                value="{{ query or '' }}"
+                required
+            >
+        </div>
+
+        <button class="predict-btn" type="submit">
+            Ask Agent →
+        </button>
+    </form>
+
+    {% if result %}
+    <div class="result-box">
+        <p>Agent Response</p>
+        <pre class="agent-response-text">
+{{ result.final_response }}
+        </pre>
+        <span>Selected Tool: {{ result.selected_tool }}</span>
+    </div>
+    {% endif %}
+
+</section>
+
+{% endblock %}

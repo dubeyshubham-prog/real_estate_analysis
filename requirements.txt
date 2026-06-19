@@ -21,3 +21,4 @@ pillow
 opencv-python
 sentence-transformers
 python-dotenv
+ollama

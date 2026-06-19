@@ -5,6 +5,8 @@ from app.routes.prediction_routes import router as prediction_router
 from app.routes.analysis_routes import router as analysis_router
 from app.routes.vision_routes import router as vision_router
 from fastapi.staticfiles import StaticFiles
+from app.routes.agent_routes import router as agent_router
+from app.routes.rag_routes import router as rag_router
 
 
 app = FastAPI(
@@ -45,3 +47,6 @@ app.include_router(
 app.include_router(
     vision_router
 )
+
+app.include_router(agent_router)
+app.include_router(rag_router)

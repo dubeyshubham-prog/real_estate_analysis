@@ -236,3 +236,44 @@ class PropertyAnalyzer:
         )
 
         return fig.to_html(full_html=False)
+
+    def market_summary(self, df, top_n=5):
+
+        total_properties = len(df)
+
+        average_price = round(
+            df["price"].mean(),
+            2
+        )
+
+        property_type_distribution = (
+            df["property_type"]
+            .value_counts()
+            .to_dict()
+        )
+
+        top_expensive_sectors = (
+            df.groupby("sector")["price"]
+            .mean()
+            .sort_values(ascending=False)
+            .head(top_n)
+            .round(2)
+            .to_dict()
+        )
+
+        top_affordable_sectors = (
+            df.groupby("sector")["price"]
+            .mean()
+            .sort_values(ascending=True)
+            .head(top_n)
+            .round(2)
+            .to_dict()
+        )
+
+        return {
+            "total_properties": total_properties,
+            "average_price_cr": average_price,
+            "property_type_distribution": property_type_distribution,
+            "top_expensive_sectors": top_expensive_sectors,
+            "top_affordable_sectors": top_affordable_sectors
+        }

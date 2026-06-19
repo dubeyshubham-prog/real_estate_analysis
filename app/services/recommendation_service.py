@@ -1,10 +1,19 @@
 import joblib
+import os
+from pathlib import Path
+BASE_DIR = Path(__file__).resolve().parents[2]
 
 class RecommendationService:
 
     def __init__(
             self,
-            recommender_path="data/pkl_files/recommendation/hybrid_recommender.pkl"
+            recommender_path=(
+                    BASE_DIR
+                    / "data"
+                    / "pkl_files"
+                    / "recommendation"
+                    / "hybrid_recommender.pkl"
+            )
     ):
         self.recommender_path = recommender_path
         self.recommender = self._load_recommender()
@@ -39,11 +48,48 @@ class RecommendationService:
             top_n: int = 5
     ):
 
-        result_df = self.recommender.recommend(
-            property_name=property_name,
-            top_n=top_n
+        matched_property = (
+            self.find_property_name(
+                property_name
+            )
+        )
+
+        if matched_property is None:
+            raise ValueError(
+                "Property not found"
+            )
+
+        result_df = (
+            self.recommender.recommend(
+                property_name=matched_property,
+                top_n=top_n
+            )
         )
 
         return result_df.to_dict(
             orient="records"
         )
+
+    def find_property_name(
+            self,
+            property_name
+    ):
+
+        property_name = (
+            property_name
+            .strip()
+            .lower()
+        )
+
+        all_properties = (
+            self.get_property_names()
+        )
+
+        for item in all_properties:
+
+            if item.lower() == property_name:
+                return item
+
+        return None
+
+obj = RecommendationService()

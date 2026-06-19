@@ -1,0 +1,70 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<section class="predict-card">
+
+    <div class="section-title">
+        <div>
+            <span>RAG Knowledge Base</span>
+            <h2>Upload Real Estate Document</h2>
+        </div>
+        <p>Upload a PDF and ask questions from its content.</p>
+    </div>
+
+    <form method="post" action="/rag/upload" enctype="multipart/form-data">
+        <div class="input-box">
+            <label>Upload PDF</label>
+            <input type="file" name="file" accept=".pdf" required>
+        </div>
+
+        <button class="predict-btn" type="submit">
+            Upload PDF →
+        </button>
+    </form>
+
+    {% if message %}
+    <div class="result-box">
+        <p>Status</p>
+        <h2>{{ message }}</h2>
+    </div>
+    {% endif %}
+
+</section>
+
+<section class="predict-card">
+
+    <div class="section-title">
+        <div>
+            <span>Ask RAG</span>
+            <h2>Ask Question From Document</h2>
+        </div>
+        <p>Ask anything from the uploaded real estate PDF.</p>
+    </div>
+
+    <form method="post" action="/rag/ask">
+        <div class="input-box">
+            <label>Your Question</label>
+            <input
+                type="text"
+                name="question"
+                placeholder="e.g. Which area is good for investment?"
+                required
+            >
+        </div>
+
+        <button class="predict-btn" type="submit">
+            Ask RAG →
+        </button>
+    </form>
+
+    {% if answer %}
+    <div class="result-box">
+        <p>RAG Answer</p>
+        <pre class="agent-response-text">{{ answer }}</pre>
+    </div>
+    {% endif %}
+
+</section>
+
+{% endblock %}
