@@ -81,7 +81,7 @@ class Config:
     DATA_DIR: Path = BASE_DIR / "data"
     ARTIFACTS_DIR: Path = BASE_DIR / "artifacts"
     LOGS_DIR: Path = RUNTIME_DIR / "logs"
-    REPORTS_DIR: Path = BASE_DIR / "reports"
+    REPORTS_DIR: Path = RUNTIME_DIR / "reports"
 
     # Application resources
     TEMPLATES_DIR: Path = APP_DIR / "templates"
@@ -178,14 +178,12 @@ class Config:
     def initialize_directories(cls) -> None:
         """Create directories that the running application may write to."""
         runtime_directories = [
-            cls.ARTIFACTS_DIR,
             cls.LOGS_DIR,
             cls.REPORTS_DIR,
             cls.UPLOADS_DIR,
             cls.IMAGE_UPLOADS_DIR,
             cls.DOCUMENT_UPLOADS_DIR,
             cls.CHROMA_DB_DIR,
-            cls.VISION_MODEL_DIR,
         ]
         for directory in runtime_directories:
             directory.mkdir(parents=True, exist_ok=True)
