@@ -7,7 +7,7 @@
         <div class="badge">Deep Vision AI</div>
         <h1>Find Visually Similar Property Images</h1>
         <p>
-            Upload any room/property image and EstateAI will search across 12K+ visual embeddings
+            Upload any room/property image and PropLens will search across 12K+ visual embeddings
             to find the most similar images using deep learning.
         </p>
     </div>
@@ -43,7 +43,8 @@
         <p>Find visually similar rooms from the image database.</p>
     </div>
 
-    <form method="post" action="/deep-vision" enctype="multipart/form-data">
+    {% if vision_enabled %}
+    <form method="post" action="/deep-vision#vision-result" enctype="multipart/form-data">
 
         <div class="vision-upload-box">
             <div class="input-box">
@@ -53,13 +54,23 @@
         </div>
 
         <button class="predict-btn" type="submit">
-            Find Similar Images →
+            Find Similar Images
         </button>
 
     </form>
+    {% else %}
+    <div class="result-box">
+        <p>Deployment Notice</p>
+        <h2>Deep Vision is unavailable in this free demo.</h2>
+        <span>
+            Price prediction, recommendations, market analysis, agent and
+            PDF knowledge-base features remain available.
+        </span>
+    </div>
+    {% endif %}
 
     {% if result %}
-    <div class="deep-vision-results">
+    <div class="deep-vision-results" id="vision-result">
 
         <div class="section-title small-title">
             <div>

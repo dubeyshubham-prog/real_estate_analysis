@@ -1,0 +1,29 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<section class="predict-card error-page">
+    <div class="section-title">
+        <div>
+            <span>Request Error</span>
+            <h2>{{ title }}</h2>
+        </div>
+        <p>Status {{ status_code }}</p>
+    </div>
+
+    <p class="error-message">{{ message }}</p>
+
+    {% if details %}
+    <ul class="error-list">
+        {% for detail in details %}
+        <li>{{ detail }}</li>
+        {% endfor %}
+    </ul>
+    {% endif %}
+
+    <button class="secondary-btn" type="button" onclick="history.back()">
+        Return to Previous Page
+    </button>
+</section>
+
+{% endblock %}

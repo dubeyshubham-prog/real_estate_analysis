@@ -1,23 +1,19 @@
-from pathlib import Path
 import torch
-from torchvision import transforms, models
 from PIL import Image
-from src.utils.logger import get_logger
+from pathlib import Path
+from torchvision import models, transforms
+
+from config.settings import Config
+from src.monitoring.logging import get_logger
+
 
 class RoomPredictor:
     def __init__(
-            self,
-            model_path="data/pkl_files/deep_learning/room_classifier_test.pth"
+        self,
+        model_path: Path = Config.ROOM_CLASSIFIER_MODEL_FILE,
     ):
-
         self.logger = get_logger(__name__)
-
-        self.project_root = Path(__file__).resolve().parents[2]
-
-        self.model_path = (
-                self.project_root /
-                model_path
-        )
+        self.model_path = Path(model_path)
 
     def load_model(self):
         self.logger.info(

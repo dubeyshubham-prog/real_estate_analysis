@@ -4,20 +4,21 @@ import torch.nn as nn
 from torch.utils.data import random_split, DataLoader, Subset
 from torchvision import transforms, models
 from torchvision.datasets import ImageFolder
-from src.utils.logger import get_logger
+
+from config.settings import Config
+from src.monitoring.logging import get_logger
+
 
 class RoomClassifierTrainer:
     def __init__(
-            self,
-            dataset_folder="data/property_images/raw/room-dataset",
-            batch_size=32,
-            image_size=224,
-            subset_size=None
+        self,
+        dataset_folder: Path = Config.ROOM_DATASET_DIR,
+        batch_size=32,
+        image_size=224,
+        subset_size=None,
     ):
         self.logger = get_logger(__name__)
-
-        self.project_root = Path(__file__).resolve().parents[2]
-        self.dataset_path = self.project_root / dataset_folder
+        self.dataset_path = Path(dataset_folder)
 
         self.batch_size = batch_size
         self.image_size = image_size

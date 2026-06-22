@@ -1,0 +1,14 @@
+{
+  "trained_at_utc": "2026-06-21T19:46:02.142527+00:00",
+  "project_count": 246,
+  "weights": {
+    "facility": 0.5,
+    "price": 0.3,
+    "location": 0.2
+  },
+  "components": [
+    "facility",
+    "price",
+    "location"
+  ]
+}

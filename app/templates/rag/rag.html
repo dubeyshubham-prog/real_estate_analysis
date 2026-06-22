@@ -3,68 +3,72 @@
 {% block content %}
 
 <section class="predict-card">
-
     <div class="section-title">
         <div>
             <span>RAG Knowledge Base</span>
-            <h2>Upload Real Estate Document</h2>
+            <h2>Upload a Real Estate Document</h2>
         </div>
-        <p>Upload a PDF and ask questions from its content.</p>
+        <p>Index a PDF, then ask questions using its content.</p>
     </div>
 
-    <form method="post" action="/rag/upload" enctype="multipart/form-data">
-        <div class="input-box">
-            <label>Upload PDF</label>
-            <input type="file" name="file" accept=".pdf" required>
+    <form method="post" action="/rag/upload#rag-upload-result" enctype="multipart/form-data">
+        <div class="input-box document-upload-box">
+            <label for="rag-pdf">Choose a PDF document</label>
+            <input
+                id="rag-pdf"
+                type="file"
+                name="file"
+                accept=".pdf,application/pdf"
+                required
+            >
+            <small>PDF only, maximum {{ max_upload_size_mb }} MB.</small>
         </div>
 
         <button class="predict-btn" type="submit">
-            Upload PDF →
+            Upload and Index PDF
         </button>
     </form>
 
     {% if message %}
-    <div class="result-box">
+    <div class="result-box" id="rag-upload-result">
         <p>Status</p>
         <h2>{{ message }}</h2>
     </div>
     {% endif %}
-
 </section>
 
 <section class="predict-card">
-
     <div class="section-title">
         <div>
             <span>Ask RAG</span>
-            <h2>Ask Question From Document</h2>
+            <h2>Ask a Question From the Document</h2>
         </div>
-        <p>Ask anything from the uploaded real estate PDF.</p>
+        <p>The answer is grounded in the indexed PDF content.</p>
     </div>
 
-    <form method="post" action="/rag/ask">
+    <form method="post" action="/rag/ask#rag-answer-result">
         <div class="input-box">
-            <label>Your Question</label>
+            <label for="rag-question">Your Question</label>
             <input
+                id="rag-question"
                 type="text"
                 name="question"
-                placeholder="e.g. Which area is good for investment?"
+                placeholder="e.g. Which area is recommended for investment?"
                 required
             >
         </div>
 
         <button class="predict-btn" type="submit">
-            Ask RAG →
+            Ask Knowledge Base
         </button>
     </form>
 
     {% if answer %}
-    <div class="result-box">
+    <div class="result-box" id="rag-answer-result">
         <p>RAG Answer</p>
         <pre class="agent-response-text">{{ answer }}</pre>
     </div>
     {% endif %}
-
 </section>
 
 {% endblock %}

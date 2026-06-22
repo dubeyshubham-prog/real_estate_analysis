@@ -1,95 +1,61 @@
-import joblib
-import os
 from pathlib import Path
-BASE_DIR = Path(__file__).resolve().parents[2]
+
+import joblib
+
+from config.settings import Config
+from src.common.exceptions import EstateAIError
+from src.common.exceptions import ResourceNotFoundError
+
+
+class RecommendationArtifactError(EstateAIError):
+    """Raised when the hybrid recommendation artifact is unavailable."""
+
 
 class RecommendationService:
+    """Load the recommender lazily and provide case-insensitive search."""
 
     def __init__(
-            self,
-            recommender_path=(
-                    BASE_DIR
-                    / "data"
-                    / "pkl_files"
-                    / "recommendation"
-                    / "hybrid_recommender.pkl"
-            )
-    ):
-        self.recommender_path = recommender_path
-        self.recommender = self._load_recommender()
+        self,
+        recommender_path: Path = Config.RECOMMENDATION_MODEL_FILE,
+    ) -> None:
+        self.recommender_path = Path(recommender_path)
+        self._recommender = None
 
-    # ==========================================================
-    # LOAD HYBRID RECOMMENDER
-    # ==========================================================
-    def _load_recommender(self):
+    @property
+    def recommender(self):
+        if self._recommender is None:
+            if not self.recommender_path.is_file():
+                raise RecommendationArtifactError(
+                    "Recommendation model not found at: "
+                    f"{self.recommender_path}"
+                )
+            self._recommender = joblib.load(self.recommender_path)
+        return self._recommender
 
-        return joblib.load(
-            self.recommender_path
-        )
+    def get_property_names(self) -> list[str]:
+        return sorted(self.recommender.property_names.tolist())
 
-    # ==========================================================
-    # GET ALL PROPERTY NAMES
-    # ==========================================================
-    def get_property_names(self):
+    def find_property_name(self, property_name: str) -> str | None:
+        normalized = property_name.strip().casefold()
+        property_lookup = {
+            item.casefold(): item
+            for item in self.get_property_names()
+        }
+        return property_lookup.get(normalized)
 
-        return sorted(
-            self.recommender.location_recommender
-            .location_df_normalized
-            .index
-            .tolist()
-        )
-
-    # ==========================================================
-    # GET RECOMMENDATIONS
-    # ==========================================================
     def get_recommendations(
-            self,
-            property_name: str,
-            top_n: int = 5
-    ):
-
-        matched_property = (
-            self.find_property_name(
-                property_name
-            )
-        )
-
+        self,
+        property_name: str,
+        top_n: int = 5,
+    ) -> list[dict[str, object]]:
+        matched_property = self.find_property_name(property_name)
         if matched_property is None:
-            raise ValueError(
-                "Property not found"
+            raise ResourceNotFoundError(
+                f"Property not found: {property_name}"
             )
 
-        result_df = (
-            self.recommender.recommend(
-                property_name=matched_property,
-                top_n=top_n
-            )
+        result = self.recommender.recommend(
+            property_name=matched_property,
+            top_n=top_n,
         )
-
-        return result_df.to_dict(
-            orient="records"
-        )
-
-    def find_property_name(
-            self,
-            property_name
-    ):
-
-        property_name = (
-            property_name
-            .strip()
-            .lower()
-        )
-
-        all_properties = (
-            self.get_property_names()
-        )
-
-        for item in all_properties:
-
-            if item.lower() == property_name:
-                return item
-
-        return None
-
-obj = RecommendationService()
+        return result.to_dict(orient="records")

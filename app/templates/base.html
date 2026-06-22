@@ -2,10 +2,10 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>EstateAI | Real Estate Intelligence</title>
+    <title>PropLens | Real Estate Intelligence, Clearly.</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <link rel="stylesheet" href="/static/css/style.css">
+    <link rel="stylesheet" href="/static/css/style.css?v=5">
 
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
 </head>
@@ -17,34 +17,38 @@
     <aside class="sidebar">
 
         <div class="brand">
-            <div class="brand-icon">E</div>
+            <div class="brand-icon">P</div>
 
             <div>
-                <h2>EstateAI</h2>
-                <p>Real Estate Intelligence</p>
+                <h2>PropLens</h2>
+                <p>Real Estate Intelligence, Clearly.</p>
             </div>
         </div>
 
         <nav class="nav-menu">
 
-            <a href="/" class="nav-item">
-                🏠 Price Prediction
+            <a href="/" class="nav-item{% if request.url.path == '/' or request.url.path == '/predict' %} active{% endif %}">
+                Price Prediction
             </a>
 
-            <a href="/recommendation" class="nav-item">
-                ✨ Recommendation
+            <a href="/recommendation" class="nav-item{% if request.url.path.startswith('/recommendation') %} active{% endif %}">
+                Recommendation
             </a>
 
-            <a href="/analysis" class="nav-item">
-                📊 Market Analysis
+            <a href="/analysis" class="nav-item{% if request.url.path.startswith('/analysis') %} active{% endif %}">
+                Market Analysis
             </a>
 
-            <a href="/deep-vision" class="nav-item">
-                🖼️ Deep Image AI
+            <a href="/deep-vision" class="nav-item{% if request.url.path.startswith('/deep-vision') %} active{% endif %}">
+                Deep Image AI
             </a>
 
-            <a href="/ai-assistant" class="nav-item">
-                🤖 Agentic AI
+            <a href="/ai-assistant" class="nav-item{% if request.url.path.startswith('/ai-assistant') %} active{% endif %}">
+                Agentic AI
+            </a>
+
+            <a href="/rag" class="nav-item{% if request.url.path.startswith('/rag') %} active{% endif %}">
+                PDF Knowledge Base
             </a>
 
         </nav>
@@ -62,9 +66,75 @@
         {% block content %}
         {% endblock %}
 
+        <footer class="app-footer">
+            <span>PropLens</span>
+            <span>Version 1.0</span>
+        </footer>
+
     </main>
 
 </div>
+
+<div class="loading-overlay" id="loading-overlay" aria-hidden="true">
+    <div class="loading-panel">
+        <div class="loading-bar"></div>
+        <p id="loading-message">Processing your request...</p>
+    </div>
+</div>
+
+<script>
+    window.addEventListener("DOMContentLoaded", () => {
+        const target = window.location.hash
+            ? document.querySelector(window.location.hash)
+            : null;
+
+        if (target) {
+            window.requestAnimationFrame(() => {
+                target.scrollIntoView({
+                    behavior: "instant",
+                    block: "start"
+                });
+            });
+        }
+
+        document.querySelectorAll("form").forEach((form) => {
+            form.addEventListener("submit", () => {
+                if (!form.checkValidity()) {
+                    return;
+                }
+
+                const button = form.querySelector('button[type="submit"]');
+                const overlay = document.getElementById("loading-overlay");
+                const message = document.getElementById("loading-message");
+
+                if (button) {
+                    button.disabled = true;
+                    button.dataset.originalText = button.textContent.trim();
+                    button.textContent = "Processing...";
+                }
+
+                message.textContent = form.enctype === "multipart/form-data"
+                    ? "Uploading and processing your file..."
+                    : "Processing your request...";
+                overlay.classList.add("visible");
+                overlay.setAttribute("aria-hidden", "false");
+            });
+        });
+    });
+
+    window.addEventListener("pageshow", () => {
+        const overlay = document.getElementById("loading-overlay");
+        overlay.classList.remove("visible");
+        overlay.setAttribute("aria-hidden", "true");
+
+        document.querySelectorAll('button[type="submit"]').forEach((button) => {
+            button.disabled = false;
+            if (button.dataset.originalText) {
+                button.textContent = button.dataset.originalText;
+            }
+        });
+    });
+</script>
 
 </body>
 </html>

@@ -1,22 +1,21 @@
-from pathlib import Path
 import pickle
+from pathlib import Path
+
 import numpy as np
 from sklearn.metrics.pairwise import cosine_similarity
 
+from config.settings import Config
 from src.deep_learning.image_embedding_extractor import (
     ImageEmbeddingExtractor
 )
 
 
 class ImageDatabaseBuilder:
-
     def __init__(
-            self,
-            image_root="data/property_images/raw/room-dataset"
+        self,
+        image_root: Path = Config.ROOM_DATASET_DIR,
     ):
-
-        self.project_root = Path(__file__).resolve().parents[2]
-        self.image_root = self.project_root / image_root
+        self.image_root = Path(image_root)
 
     def collect_images(self):
 
@@ -60,13 +59,12 @@ class EmbeddingGenerator:
 
 
 class VisualEmbeddingDatabase:
-
     def __init__(
-            self,
-            max_images=None
+        self,
+        max_images=None,
+        image_root: Path = Config.ROOM_DATASET_DIR,
     ):
-
-        self.image_db_builder = ImageDatabaseBuilder()
+        self.image_db_builder = ImageDatabaseBuilder(image_root=image_root)
         self.embedding_generator = EmbeddingGenerator()
         self.max_images = max_images
 
@@ -101,13 +99,11 @@ class VisualEmbeddingDatabase:
         return database
 
     def save_database(
-            self,
-            database,
-            save_path="data/embeddings/visual_embedding_database.pkl"
+        self,
+        database,
+        save_path: Path = Config.VISUAL_EMBEDDING_DATABASE_FILE,
     ):
-
-        project_root = Path(__file__).resolve().parents[2]
-        save_path = project_root / save_path
+        save_path = Path(save_path)
 
         save_path.parent.mkdir(
             parents=True,
@@ -124,18 +120,20 @@ class VisualEmbeddingDatabase:
 
 
 class VisualSimilaritySearch:
-
     def __init__(
-            self,
-            database_path="data/embeddings/visual_embedding_database.pkl"
+        self,
+        database_path: Path = Config.VISUAL_EMBEDDING_DATABASE_FILE,
+        image_root: Path = Config.ROOM_DATASET_DIR,
     ):
-
-        self.project_root = Path(__file__).resolve().parents[2]
-        self.database_path = self.project_root / database_path
-
+        self.database_path = Path(database_path)
+        self.image_root = Path(image_root)
         self.embedding_generator = EmbeddingGenerator()
 
     def load_database(self):
+        if not self.database_path.exists():
+            raise FileNotFoundError(
+                f"Visual embedding database not found: {self.database_path}"
+            )
 
         with open(self.database_path, "rb") as file:
             self.database = pickle.load(file)
@@ -180,8 +178,7 @@ class VisualSimilaritySearch:
             relative_path = Path(
                 item["image_path"]
             ).relative_to(
-                self.project_root /
-                "data/property_images/raw/room-dataset"
+                self.image_root
             )
 
             image_url = (

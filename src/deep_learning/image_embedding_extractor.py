@@ -1,6 +1,6 @@
 import torch
 from torchvision import models
-from src.utils.logger import get_logger
+from src.monitoring.logging import get_logger
 from torchvision import models, transforms
 from PIL import Image
 

@@ -1,5 +1,5 @@
-from src.utils.data_loader import DataLoader
-from src.utils.analyser import PropertyAnalyzer
+from src.data.loader import DataLoader
+from src.analysis.property_analyzer import PropertyAnalyzer
 
 
 class AnalysisService:
@@ -15,16 +15,15 @@ class AnalysisService:
     def load_data(self):
 
         df = self.loader.load_gurgaon_property_analysis_data()
-        latlong = self.loader.load_lat_long_data()
 
-        return df, latlong
+        return df
 
     # ==========================================================
     # CREATE ALL ANALYSIS CHARTS
     # ==========================================================
     def get_dashboard_charts(self):
 
-        df, latlong = self.load_data()
+        df = self.load_data()
 
         charts = {
             "property_type_distribution": (

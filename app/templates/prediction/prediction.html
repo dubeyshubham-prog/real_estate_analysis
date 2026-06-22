@@ -85,9 +85,14 @@
         <p>Fill the details below and get an estimated market price.</p>
     </div>
 
-    <form method="post" action="/predict">
+    <form id="prediction-form" method="post" action="/predict#prediction-result">
 
         <div class="form-grid">
+
+            <div class="form-section-title">
+                <span>Property</span>
+                <p>Basic property configuration</p>
+            </div>
 
             <div class="input-box">
                 <label>Property Type</label>
@@ -109,12 +114,12 @@
 
             <div class="input-box">
                 <label>Bedrooms</label>
-                <input type="number" name="bedRoom" step="1" placeholder="e.g. 3" required>
+                <input type="number" name="bedRoom" min="1" max="20" step="1" placeholder="e.g. 3" required>
             </div>
 
             <div class="input-box">
                 <label>Bathrooms</label>
-                <input type="number" name="bathroom" step="1" placeholder="e.g. 2" required>
+                <input type="number" name="bathroom" min="1" max="20" step="1" placeholder="e.g. 2" required>
             </div>
 
             <div class="input-box">
@@ -135,19 +140,31 @@
                 </select>
             </div>
 
+            <div class="form-section-title">
+                <span>Building</span>
+                <p>Floor and area details</p>
+            </div>
+
             <div class="input-box">
                 <label>Floor Number</label>
-                <input type="number" name="floor_num" step="1" placeholder="e.g. 5" required>
+                <input type="number" name="floor_num" min="-2" max="100" step="1" placeholder="e.g. 5" required>
+                <small>Use -2 or -1 only for basement floors.</small>
             </div>
 
             <div class="input-box">
                 <label>Total Floors</label>
-                <input type="number" name="total_floors" step="1" placeholder="e.g. 18" required>
+                <input type="number" name="total_floors" min="0" max="100" step="1" placeholder="e.g. 18" required>
             </div>
 
             <div class="input-box">
                 <label>Built Up Area</label>
-                <input type="number" name="built_up_area" step="1" placeholder="e.g. 1450" required>
+                <input type="number" name="built_up_area" min="101" max="100000" step="1" placeholder="e.g. 1450" required>
+                <small>Enter the area in square feet; minimum 101 sq ft.</small>
+            </div>
+
+            <div class="form-section-title">
+                <span>Features</span>
+                <p>Rooms, furnishing and category</p>
             </div>
 
             <div class="input-box">
@@ -196,13 +213,13 @@
         </div>
 
         <button class="predict-btn" type="submit">
-            Predict Price →
+            Predict Price
         </button>
 
     </form>
 
     {% if prediction %}
-    <div class="result-box">
+    <div class="result-box" id="prediction-result">
         <p>Estimated Market Price</p>
         <h2>₹ {{ prediction }} Cr</h2>
         <span>This is an ML-based estimate and may vary with real market conditions.</span>
@@ -210,5 +227,32 @@
     {% endif %}
 
 </section>
+
+<script>
+    const predictionForm = document.getElementById("prediction-form");
+    const floorInput = predictionForm.elements.floor_num;
+    const totalFloorsInput = predictionForm.elements.total_floors;
+
+    function validateFloorRelationship() {
+        const floor = Number(floorInput.value);
+        const totalFloors = Number(totalFloorsInput.value);
+        const isInvalid = (
+            floorInput.value
+            && totalFloorsInput.value
+            && totalFloors > 0
+            && floor > totalFloors
+        );
+
+        floorInput.setCustomValidity(
+            isInvalid
+                ? "Floor number cannot be greater than total floors."
+                : ""
+        );
+    }
+
+    floorInput.addEventListener("input", validateFloorRelationship);
+    totalFloorsInput.addEventListener("input", validateFloorRelationship);
+    predictionForm.addEventListener("submit", validateFloorRelationship);
+</script>
 
 {% endblock %}

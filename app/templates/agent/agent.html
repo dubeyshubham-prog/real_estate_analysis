@@ -5,10 +5,10 @@
 <section class="hero">
     <div class="hero-left">
         <div class="badge">Agentic AI</div>
-        <h1>Ask EstateAI Anything About Real Estate</h1>
+        <h1>Ask PropLens Anything About Real Estate</h1>
         <p>
-            Ask questions about market analysis, similar properties, price prediction,
-            and real estate decision-making.
+            Gurgaon questions use the project dataset. Global and other-city
+            questions use live web search.
         </p>
     </div>
 
@@ -31,13 +31,13 @@
 
     <div class="section-title">
         <div>
-            <span>EstateAI Agent</span>
+            <span>PropLens Agent</span>
             <h2>Ask Your Query</h2>
         </div>
         <p>Example: Analyze Gurgaon real estate market</p>
     </div>
 
-    <form method="post" action="/ai-assistant">
+    <form method="post" action="/ai-assistant#agent-result">
         <div class="input-box">
             <label>Your Question</label>
             <input
@@ -50,17 +50,33 @@
         </div>
 
         <button class="predict-btn" type="submit">
-            Ask Agent →
+            Ask Agent
         </button>
     </form>
 
     {% if result %}
-    <div class="result-box">
+    <div class="result-box" id="agent-result">
         <p>Agent Response</p>
+        {% if result.plan == ["web_search"] and result.tool_result.results %}
+        <div class="search-results">
+            {% for item in result.tool_result.results %}
+            <article class="search-result-card">
+                <h3>{{ item.title }}</h3>
+                {% if item.snippet %}
+                <p>{{ item.snippet }}</p>
+                {% endif %}
+                <a href="{{ item.url }}" target="_blank" rel="noopener noreferrer">
+                    Open source
+                </a>
+            </article>
+            {% endfor %}
+        </div>
+        {% else %}
         <pre class="agent-response-text">
 {{ result.final_response }}
         </pre>
-        <span>Selected Tool: {{ result.selected_tool }}</span>
+        {% endif %}
+        <span>Executed Tool: {{ result.plan | join(', ') }}</span>
     </div>
     {% endif %}
 

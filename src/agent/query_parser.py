@@ -1,6 +1,47 @@
 import re
 
+
 class QueryParser:
+    LOCAL_MARKET_TERMS = {
+        "gurgaon",
+        "gurugram",
+        "delhi ncr",
+        "ncr",
+    }
+    EXTERNAL_MARKET_TERMS = {
+        "world",
+        "worldwide",
+        "global",
+        "international",
+        "outside india",
+        "india",
+        "indian",
+        "usa",
+        "united states",
+        "uk",
+        "united kingdom",
+        "dubai",
+        "uae",
+        "europe",
+        "asia",
+        "mumbai",
+        "bangalore",
+        "bengaluru",
+        "hyderabad",
+        "pune",
+        "chennai",
+        "kolkata",
+        "noida",
+    }
+
+    def extract_market_scope(self, query):
+        query = query.lower()
+        if any(term in query for term in self.LOCAL_MARKET_TERMS):
+            return "gurgaon"
+        if any(term in query for term in self.EXTERNAL_MARKET_TERMS):
+            return "external"
+        return "unspecified"
+
     def extract_bhk(self, query):
 
         match = re.search(
@@ -146,5 +187,6 @@ class QueryParser:
             "budget": self.extract_budget(query),
             "property_type": self.extract_property_type(query),
             "purpose": self.extract_purpose(query),
-            "property_name": self.extract_property_name(query)
+            "property_name": self.extract_property_name(query),
+            "market_scope": self.extract_market_scope(query),
         }

@@ -50,12 +50,4 @@ class PlanExecutor:
                     )
                 )
 
-            elif step == "rag":
-
-                results["rag"] = (
-                    self.tools.get_rag_answer(
-                        parsed_query
-                    )
-                )
-
         return results

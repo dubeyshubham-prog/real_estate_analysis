@@ -84,28 +84,31 @@ class EstateAgent:
             )
         )
 
-        if "rag" in execution_results:
-            tool_result = execution_results["rag"]
-
-            return {
-                "selected_tool": selected_tool,
-                "plan": plan,
-                "parsed_query": parsed_query,
-                "tool_result": tool_result,
-                "final_response": tool_result["answer"],
-                "execution_results": execution_results,
-                "reasoning_result": reasoning_result
-            }
-
         if "web_search" in execution_results:
             tool_result = execution_results["web_search"]
+            results = tool_result.get("results", [])
+            if results:
+                formatted_results = "\n\n".join(
+                    (
+                        f"{index}. {item['title']}\n"
+                        f"{item.get('snippet', '')}\n"
+                        f"{item['url']}"
+                    ).strip()
+                    for index, item in enumerate(results, start=1)
+                )
+                final_response = (
+                    "Here are the latest web results:\n\n"
+                    f"{formatted_results}"
+                )
+            else:
+                final_response = tool_result["message"]
 
             return {
                 "selected_tool": selected_tool,
                 "plan": plan,
                 "parsed_query": parsed_query,
                 "tool_result": tool_result,
-                "final_response": tool_result["results"][0],
+                "final_response": final_response,
                 "execution_results": execution_results,
                 "reasoning_result": reasoning_result
             }

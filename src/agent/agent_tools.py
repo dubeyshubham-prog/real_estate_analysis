@@ -1,21 +1,18 @@
-from src.utils.analyser import PropertyAnalyzer
-from src.utils.data_loader import DataLoader
+from src.analysis.property_analyzer import PropertyAnalyzer
+from src.data.loader import DataLoader
 from app.services.prediction_service import (
     PredictionService
 )
 from app.services.recommendation_service import RecommendationService
 from src.agent.web_search_tool import WebSearchTool
-from src.rag.rag_services import RAGService
 
 
 class AgentTools:
 
-    def __init__(self):
+    def __init__(self, web_search=None):
         self.data_loader = DataLoader()
         self.analyzer = PropertyAnalyzer()
-        # self.recommendation_service = RecommendationService()
-        self.web_search = WebSearchTool()
-        self.rag = RAGService()
+        self.web_search = web_search or WebSearchTool()
 
     def get_price_prediction(
             self,
@@ -125,19 +122,24 @@ class AgentTools:
             parsed_query
     ):
 
-        query = parsed_query[
+        original_query = parsed_query[
             "original_query"
         ]
 
-        return self.web_search.search(
-            query
+        search_query = self._prepare_web_search_query(
+            original_query,
+            parsed_query.get("market_scope"),
         )
+        result = self.web_search.search(search_query)
+        result["original_query"] = original_query
+        return result
 
-    def get_rag_answer(
-            self,
-            parsed_query
-    ):
-
-        return self.rag.ask(
-            parsed_query["original_query"]
-        )
+    @staticmethod
+    def _prepare_web_search_query(query, market_scope):
+        normalized_query = query.lower()
+        if market_scope == "external" and any(
+            term in normalized_query
+            for term in ["world", "worldwide", "global", "international"]
+        ):
+            return "global real estate market latest news"
+        return query

@@ -43,7 +43,7 @@
         <p>Choose a property and find the most similar projects.</p>
     </div>
 
-    <form method="post" action="/recommendation">
+    <form method="post" action="/recommendation#recommendation-result">
 
         <div class="form-grid">
 
@@ -67,13 +67,13 @@
         </div>
 
         <button class="predict-btn" type="submit">
-            Get Recommendations →
+            Get Recommendations
         </button>
 
     </form>
 
     {% if recommendations %}
-    <div class="recommendation-results">
+    <div class="recommendation-results" id="recommendation-result">
 
         <div class="section-title small-title">
             <div>

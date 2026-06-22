@@ -1,0 +1,5 @@
+# Install runtime dependencies before development-only tools.
+-r requirements.txt
+
+# Testing
+pytest>=8.3,<10.0

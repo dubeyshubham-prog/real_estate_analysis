@@ -16,7 +16,7 @@ class AgentResponseGenerator:
         )
 
         response = (
-            f"📊 Gurgaon Market Summary\n\n"
+            f"Gurgaon Market Summary\n\n"
 
             f"Total Properties: "
             f"{summary['total_properties']}\n\n"

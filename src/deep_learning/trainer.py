@@ -1,7 +1,9 @@
-import torch
-from src.utils.logger import get_logger
 from pathlib import Path
+
 import torch
+
+from config.settings import Config
+from src.monitoring.logging import get_logger
 
 class TrainingMetrics:
     def calculate_accuracy(self, outputs, labels):
@@ -176,14 +178,11 @@ class RoomTrainingPipeline:
         self.logger.info("Room classification training completed")
 
 class ModelSaver:
-
     def __init__(
-            self,
-            save_dir="data/pkl_files/deep_learning"
+        self,
+        save_dir: Path = Config.VISION_MODEL_DIR,
     ):
-
-        self.project_root = Path(__file__).resolve().parents[2]
-        self.save_dir = self.project_root / save_dir
+        self.save_dir = Path(save_dir)
 
         self.save_dir.mkdir(
             parents=True,

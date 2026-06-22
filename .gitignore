@@ -1,81 +1,72 @@
-# ==========================================
-# PYTHON
-# ==========================================
+# Python bytecode and caches
 __pycache__/
 *.py[cod]
 *$py.class
 
-# ==========================================
-# VIRTUAL ENVIRONMENT
-# ==========================================
+# Virtual environments
 .venv/
 venv/
 env/
 ENV/
 
-# ==========================================
-# IDE FILES
-# ==========================================
-.idea/
-.vscode/
+# Environment variables and local secrets
+.env
+.env.*
+!.env.example
 
-# ==========================================
-# JUPYTER
-# ==========================================
-.ipynb_checkpoints/
-
-# ==========================================
-# LOG FILES
-# ==========================================
-logs/
-*.log
-
-# ==========================================
-# TEST CACHE
-# ==========================================
+# Test and coverage outputs
 .pytest_cache/
+.test_tmp*/
+.hf_runtime*/
 .coverage
+.coverage.*
 htmlcov/
 
-# ==========================================
-# OPERATING SYSTEM FILES
-# ==========================================
-.DS_Store
-Thumbs.db
-
-# ==========================================
-# ENVIRONMENT VARIABLES
-# ==========================================
-.env
-
-# ==========================================
-# DEEP LEARNING DATA
-# ==========================================
-data/property_images/raw/
-data/property_images/processed/
+# Logs and runtime outputs
+logs/
+*.log
+artifacts/*
+!artifacts/models/
+artifacts/models/*
+!artifacts/models/price_prediction/
+!artifacts/models/price_prediction/model.joblib
+!artifacts/models/price_prediction/reference_data.joblib
+!artifacts/models/price_prediction/metadata.json
+!artifacts/models/recommendation/
+!artifacts/models/recommendation/hybrid_recommender.joblib
+!artifacts/models/recommendation/metadata.json
+artifacts/models/vision/
+data/chroma_db/
+data/uploads/
 data/uploaded_images/
 data/embeddings/
 
-# ==========================================
-# TEMP FILES
-# ==========================================
-*.tmp
-*.bak
-*.swp
+# Generated deep-learning data and test models
+data/property_images/raw/
+data/property_images/processed/
+data/pkl_files/deep_learning/*_test.pth
 
-# ==========================================
-# STREAMLIT CACHE (OLD PROJECT)
-# ==========================================
-.streamlit/
-
-# ==========================================
-# LARGE DATASETS (DO NOT PUSH)
-# ==========================================
+# Large or generated datasets
 data/raw/
 data/interim/
 data/external/
 
-# ==========================================
-# DATABASE FILES
-# ==========================================
+# Local databases
 *.sqlite3
+*.db
+data/proplens.db
+
+# Notebook, editor, and operating-system files
+.ipynb_checkpoints/
+.idea/
+.vscode/
+.DS_Store
+Thumbs.db
+
+# Temporary files
+*.tmp
+*.bak
+*.swp
+
+# Legacy application cache
+.streamlit/
