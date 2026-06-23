@@ -493,6 +493,68 @@ body {
     font-size: 14px;
 }
 
+.explanation-panel {
+    margin-top: 28px;
+    padding-top: 24px;
+    border-top: 1px solid var(--border);
+}
+
+.explanation-heading {
+    display: flex;
+    justify-content: space-between;
+    gap: 20px;
+    align-items: end;
+}
+
+.explanation-heading span {
+    margin: 0;
+    text-align: right;
+}
+
+.explanation-list {
+    display: grid;
+    gap: 10px;
+    margin-top: 18px;
+}
+
+.explanation-item {
+    display: flex;
+    justify-content: space-between;
+    gap: 24px;
+    padding: 14px;
+    background: var(--surface);
+    border: 1px solid var(--border);
+}
+
+.explanation-item strong,
+.explanation-item b {
+    display: block;
+}
+
+.explanation-item span {
+    margin-top: 4px;
+}
+
+.explanation-item b {
+    min-width: 150px;
+    text-align: right;
+    font-size: 14px;
+}
+
+.explanation-item b.increases {
+    color: #d4d4d4;
+}
+
+.explanation-item b.decreases {
+    color: #a3a3a3;
+}
+
+.explanation-panel small {
+    display: block;
+    margin-top: 14px;
+    color: var(--text-subtle);
+}
+
 /* RESPONSIVE */
 
 @media (max-width: 1300px) {

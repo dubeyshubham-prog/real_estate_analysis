@@ -222,7 +222,42 @@
     <div class="result-box" id="prediction-result">
         <p>Estimated Market Price</p>
         <h2>₹ {{ prediction }} Cr</h2>
+        {% if prediction_range %}
+        <span>
+            Expected range: ₹ {{ prediction_range.lower_estimate_cr }} Cr
+            to ₹ {{ prediction_range.upper_estimate_cr }} Cr
+        </span>
+        {% endif %}
         <span>This is an ML-based estimate and may vary with real market conditions.</span>
+
+        {% if explanations %}
+        <div class="explanation-panel">
+            <div class="explanation-heading">
+                <p>What influenced this estimate?</p>
+                <span>Compared with typical properties in the training data.</span>
+            </div>
+            <div class="explanation-list">
+                {% for item in explanations %}
+                <div class="explanation-item">
+                    <div>
+                        <strong>{{ item.label }}</strong>
+                        <span>
+                            {{ item.input_value }} compared with typical
+                            {{ item.baseline_value }}
+                        </span>
+                    </div>
+                    <b class="{{ item.direction }}">
+                        {{ "Higher" if item.direction == "increases" else "Lower" }}
+                        by ₹ {{ item.impact_cr }} Cr
+                    </b>
+                </div>
+                {% endfor %}
+            </div>
+            <small>
+                These are local what-if explanations, not guarantees of market causation.
+            </small>
+        </div>
+        {% endif %}
     </div>
     {% endif %}
 

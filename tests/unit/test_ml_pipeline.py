@@ -96,3 +96,13 @@ def test_training_artifacts_support_inference(tmp_path: Path) -> None:
 
     assert prediction["predicted_price_cr"] > 0
     assert prediction["lower_estimate_cr"] <= prediction["upper_estimate_cr"]
+    assert prediction["explanations"]
+    assert len(prediction["explanations"]) <= 5
+    assert {
+        "feature",
+        "label",
+        "direction",
+        "impact_cr",
+        "input_value",
+        "baseline_value",
+    }.issubset(prediction["explanations"][0])

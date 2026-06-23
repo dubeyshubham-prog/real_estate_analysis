@@ -69,6 +69,7 @@ def home(
             "options": service.get_form_options(),
             "prediction": None,
             "prediction_range": None,
+            "explanations": [],
         },
     )
 
@@ -87,5 +88,6 @@ def predict_price(
             "options": service.get_form_options(),
             "prediction": prediction["predicted_price_cr"],
             "prediction_range": prediction,
+            "explanations": prediction["explanations"],
         },
     )

@@ -36,5 +36,5 @@ class PredictionService:
     def predict_price(
         self,
         input_data: dict[str, object],
-    ) -> dict[str, float]:
+    ) -> dict[str, object]:
         return self.predictor.predict(input_data)

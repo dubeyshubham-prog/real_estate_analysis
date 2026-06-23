@@ -144,6 +144,7 @@ def test_prediction_form_validates_and_renders_result(
 
     assert response.status_code == 200
     assert "Estimated Market Price" in response.text
+    assert "What influenced this estimate?" in response.text
 
 
 def test_prediction_page_exposes_numeric_input_limits(
